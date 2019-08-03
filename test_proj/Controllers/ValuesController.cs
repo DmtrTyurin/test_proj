@@ -11,25 +11,21 @@ namespace test_proj.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        static readonly List<User> data;
-        static ValuesController()
-        {
-            data = new List<User>();
-                using (ApplicationContext db = new ApplicationContext())
-                {
-                    var users = db.Users.ToList();
-                    foreach (User u in users)
-                    {
-                        data.Add(new User() { Id = u.Id, Name = u.Name, SurName = u.SurName });
-                    }
-                }
-        }
-        
+                
         // GET api/values
         [HttpGet]
         //public ActionResult<IEnumerable<string>> Get()
         public IEnumerable<User> Get()
         {
+            List<User> data = new List<User>();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var users = db.Users.ToList();
+                foreach (User u in users)
+                {
+                    data.Add(new User() { Id = u.Id, Name = u.Name, SurName = u.SurName });
+                }
+            }
             return data;
         }
 
@@ -48,7 +44,7 @@ namespace test_proj.Controllers
             {
                 db.Database.EnsureCreated();
                 db.Users.Add(user);
-                data.Add(user);
+                //data.Add(user);
                 db.SaveChanges();
                 return Ok(user);
             }
